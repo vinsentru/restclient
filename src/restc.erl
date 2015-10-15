@@ -38,7 +38,7 @@
 -type status_codes() :: [status_code()].
 -type status_code()  :: integer().
 -type reason()       :: term().
--type content_type() :: json | xml | percent.
+-type content_type() :: json | xml | percent | binary.
 -type property()     :: atom() | tuple().
 -type proplist()     :: [property()].
 -type body()         :: proplist().
@@ -116,6 +116,8 @@ encode_body(percent, Body) ->
     mochiweb_util:urlencode(Body);
 encode_body(xml, Body) ->
     lists:flatten(xmerl:export_simple(Body, xmerl_xml));
+encode_body(binary, Body) ->
+    Body;    
 encode_body(_, Body) ->
    encode_body(?DEFAULT_ENCODING, Body).
 
@@ -171,9 +173,11 @@ parse_body(_, Body)          -> Body.
 get_accesstype(json)    -> "application/json";
 get_accesstype(xml)     -> "application/xml";
 get_accesstype(percent) -> "application/json";
+get_accesstype(binary) ->  "application/octet-stream";
 get_accesstype(_)       -> get_ctype(?DEFAULT_ENCODING).
 
 get_ctype(json)    -> "application/json";
 get_ctype(xml)     -> "application/xml";
 get_ctype(percent) -> "application/x-www-form-urlencoded";
+get_ctype(binary) ->  "application/octet-stream";
 get_ctype(_)       -> get_ctype(?DEFAULT_ENCODING).
