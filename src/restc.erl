@@ -38,7 +38,7 @@
 -type status_codes() :: [status_code()].
 -type status_code()  :: integer().
 -type reason()       :: term().
--type content_type() :: json | xml | percent | binary.
+-type content_type() :: json | xml | percent | binary | string().
 -type property()     :: atom() | tuple().
 -type proplist()     :: [property()].
 -type body()         :: proplist().
@@ -167,10 +167,14 @@ get_accesstype(json)    -> "application/json";
 get_accesstype(xml)     -> "application/xml";
 get_accesstype(percent) -> "application/json";
 get_accesstype(binary) ->  "application/octet-stream";
-get_accesstype(_)       -> get_ctype(?DEFAULT_ENCODING).
+%% Pass unknown content type as is
+get_accesstype(Type)       -> Type.
+% get_accesstype(_)       -> get_ctype(?DEFAULT_ENCODING).
 
 get_ctype(json)    -> "application/json";
 get_ctype(xml)     -> "application/xml";
 get_ctype(percent) -> "application/x-www-form-urlencoded";
 get_ctype(binary) ->  "application/octet-stream";
-get_ctype(_)       -> get_ctype(?DEFAULT_ENCODING).
+%% Pass unknown content type as is
+get_ctype(Type)       -> Type.
+% get_ctype(_)       -> get_ctype(?DEFAULT_ENCODING).
