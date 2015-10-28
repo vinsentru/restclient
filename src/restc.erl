@@ -116,9 +116,10 @@ encode_body(percent, Body) ->
 encode_body(xml, Body) ->
     lists:flatten(xmerl:export_simple(Body, xmerl_xml));
 encode_body(binary, Body) ->
-    Body;    
+    Body;  
+% Do not encode body for unknown type      
 encode_body(_, Body) ->
-   encode_body(?DEFAULT_ENCODING, Body).
+    Body.
 
 urlunsplit(S, N, P, Query) ->
     Q = mochiweb_util:urlencode(Query),
