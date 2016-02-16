@@ -150,7 +150,9 @@ parse_response({ok, {{StatusCode, _}, Headers, Body}}) ->
     Type = case proplists:get_value("content-type", Headers) of
                 undefined -> 
                     case proplists:get_value("Content-Type", Headers) of
-                        undefined -> undefined;
+                        % undefined -> undefined;
+                        % Server returned no content type, suppose it's plain text
+                        undefined -> "text/plain";
                         Val -> Val
                     end;
                 Val -> Val        
